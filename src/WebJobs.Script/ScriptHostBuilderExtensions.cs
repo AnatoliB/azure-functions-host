@@ -168,6 +168,9 @@ namespace Microsoft.Azure.WebJobs.Script
 
                 services.AddSingleton<IHostedService, LanguageWorkerConsoleLogService>();
                 services.TryAddEnumerable(ServiceDescriptor.Singleton<IHostedService, PrimaryHostCoordinator>());
+                // TODO: only add the scale monitor service if runtime scale is enabled
+                services.TryAddEnumerable(ServiceDescriptor.Singleton<IHostedService, FunctionsScaleMonitorService>());
+                services.TryAddSingleton<FunctionsScaleManager>();
             });
 
             RegisterFileProvisioningService(builder);

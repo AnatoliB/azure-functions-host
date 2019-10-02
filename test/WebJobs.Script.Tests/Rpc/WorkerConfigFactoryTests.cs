@@ -211,46 +211,30 @@ namespace Microsoft.Azure.WebJobs.Script.Tests.Rpc
         [Fact]
         public void PowerShell_DefaultExecutablePath()
         {
-            var configBuilder = ScriptSettingsManager.CreateDefaultConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
-                {
-                    ["languageWorker"] = "test"
-                });
+            var configBuilder = ScriptSettingsManager.CreateDefaultConfigurationBuilder();
             var config = configBuilder.Build();
-            var scriptSettingsManager = new ScriptSettingsManager(config);
             var testLogger = new TestLogger("test");
             var configFactory = new WorkerConfigFactory(config, testLogger);
-            var testEnvVariables = new Dictionary<string, string>();
-            using (var variables = new TestScopedSettings(scriptSettingsManager, testEnvVariables))
-            {
-                var expectedExecutablePath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet", "dummyExecutableName");
 
-                var actualExecutablePath = configFactory.GetExecutablePathForPowerShell("dummyExecutableName");
+            var expectedExecutablePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet", "dummyExecutableName");
 
-                Assert.Equal(expectedExecutablePath, actualExecutablePath);
-            }
+            var actualExecutablePath = configFactory.GetExecutablePathForPowerShell("dummyExecutableName");
+
+            Assert.Equal(expectedExecutablePath, actualExecutablePath);
         }
 
         [Fact]
         public void PowerShell_RootedExecutablePath()
         {
-            var configBuilder = ScriptSettingsManager.CreateDefaultConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
-                {
-                    ["languageWorker"] = "test"
-                });
+            var configBuilder = ScriptSettingsManager.CreateDefaultConfigurationBuilder();
             var config = configBuilder.Build();
-            var scriptSettingsManager = new ScriptSettingsManager(config);
             var testLogger = new TestLogger("test");
             var configFactory = new WorkerConfigFactory(config, testLogger);
-            var testEnvVariables = new Dictionary<string, string>();
-            using (var variables = new TestScopedSettings(scriptSettingsManager, testEnvVariables))
-            {
-                var actualExecutablePath = configFactory.GetExecutablePathForPowerShell(@"D:\CustomExecutableFolder\CustomExecutableName");
 
-                Assert.Equal(@"D:\CustomExecutableFolder\CustomExecutableName", actualExecutablePath);
-            }
+            var actualExecutablePath = configFactory.GetExecutablePathForPowerShell(@"D:\CustomExecutableFolder\CustomExecutableName");
+
+            Assert.Equal(@"D:\CustomExecutableFolder\CustomExecutableName", actualExecutablePath);
         }
     }
 }

@@ -109,7 +109,7 @@ namespace Microsoft.Azure.WebJobs.Script.Workers.Rpc
                 ValidateArchitecture(systemRuntimeInformation.GetOSArchitecture());
             }
 
-            if (DefaultWorkerPath.Contains(RpcWorkerConstants.RuntimeVersionPlaceholder) && !string.IsNullOrEmpty(DefaultRuntimeVersion))
+            if (!string.IsNullOrEmpty(DefaultRuntimeVersion))
             {
                 ValidateRuntimeVersion();
             }
